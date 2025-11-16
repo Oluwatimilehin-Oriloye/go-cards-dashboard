@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { TopNav } from "@/components/dashboard/TopNav";
 import { Card } from "@/components/ui/card";
+import { TransactionDetailsModal } from "@/components/transactions/TransactionDetailsModal";
 import {
   Table,
   TableBody,
@@ -30,7 +31,15 @@ import {
 } from "@/components/ui/pagination";
 
 // Mock transaction data
-const allTransactions = [
+const allTransactions: Array<{
+  id: string;
+  date: string;
+  amount: string;
+  type: "Inflow" | "Outflow";
+  description: string;
+  status: string;
+  card: string;
+}> = [
   {
     id: "1",
     date: "13 August 2025, 18:48:45",
@@ -127,6 +136,13 @@ export default function Transactions() {
   const [transactionType, setTransactionType] = useState("all");
   const [selectedCard, setSelectedCard] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedTransaction, setSelectedTransaction] = useState<typeof allTransactions[0] | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleTransactionClick = (transaction: typeof allTransactions[0]) => {
+    setSelectedTransaction(transaction);
+    setIsModalOpen(true);
+  };
 
   // Filter transactions
   const filteredTransactions = allTransactions.filter((transaction) => {
@@ -242,6 +258,7 @@ export default function Transactions() {
                     <TableRow
                       key={transaction.id}
                       className="hover:bg-muted/50 cursor-pointer border-border"
+                      onClick={() => handleTransactionClick(transaction)}
                     >
                       <TableCell className="text-foreground">
                         {transaction.date}
@@ -275,6 +292,7 @@ export default function Transactions() {
                 <Card
                   key={transaction.id}
                   className="p-4 cursor-pointer hover:bg-muted/50 transition-colors"
+                  onClick={() => handleTransactionClick(transaction)}
                 >
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex-1">
@@ -371,6 +389,12 @@ export default function Transactions() {
           </Card>
         </main>
       </div>
+
+      <TransactionDetailsModal
+        transaction={selectedTransaction}
+        open={isModalOpen}
+        onOpenChange={setIsModalOpen}
+      />
     </div>
   );
 }
