@@ -8,6 +8,15 @@ import { CardTransactions } from "@/components/cards/CardTransactions";
 export default function Cards() {
   const [selectedCardId, setSelectedCardId] = useState("temu-card");
 
+  // Mock cards data
+  const cards = [
+    { id: "temu-card", name: "Temu Card", balance: 45000 },
+    { id: "jumia-card", name: "Jumia Card", balance: 32000 },
+    { id: "konga-card", name: "Konga Card", balance: 18500 },
+  ];
+
+  const selectedCard = cards.find(card => card.id === selectedCardId) || cards[0];
+
   return (
     <div className="flex min-h-screen bg-background">
       <Sidebar />
@@ -28,7 +37,11 @@ export default function Cards() {
           />
 
           {/* Action Buttons */}
-          <CardActions selectedCardId={selectedCardId} />
+          <CardActions 
+            selectedCardId={selectedCardId}
+            cardName={selectedCard.name}
+            balance={selectedCard.balance}
+          />
 
           {/* Recent Transactions */}
           <CardTransactions selectedCardId={selectedCardId} />
