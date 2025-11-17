@@ -1,4 +1,5 @@
 import { Info, Plus, Snowflake, Trash2 } from "lucide-react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   AlertDialog,
@@ -12,14 +13,19 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
+import { CardDetailsModal } from "./CardDetailsModal";
 
 interface CardActionsProps {
   selectedCardId: string;
+  cardName: string;
+  balance: number;
 }
 
-export function CardActions({ selectedCardId }: CardActionsProps) {
+export function CardActions({ selectedCardId, cardName, balance }: CardActionsProps) {
+  const [detailsModalOpen, setDetailsModalOpen] = useState(false);
+
   const handleDetails = () => {
-    toast.info("Card details functionality coming soon!");
+    setDetailsModalOpen(true);
   };
 
   const handleAddMoney = () => {
@@ -35,8 +41,17 @@ export function CardActions({ selectedCardId }: CardActionsProps) {
   };
 
   return (
-    <div className="flex justify-center gap-8">
-      {/* Details */}
+    <>
+      <CardDetailsModal
+        open={detailsModalOpen}
+        onOpenChange={setDetailsModalOpen}
+        cardId={selectedCardId}
+        cardName={cardName}
+        balance={balance}
+      />
+
+      <div className="flex justify-center gap-8">
+        {/* Details */}
       <div className="flex flex-col items-center gap-2">
         <Button
           onClick={handleDetails}
@@ -120,6 +135,7 @@ export function CardActions({ selectedCardId }: CardActionsProps) {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </div>
+      </div>
+    </>
   );
 }
