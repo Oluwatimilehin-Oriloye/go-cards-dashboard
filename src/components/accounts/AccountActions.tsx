@@ -13,7 +13,7 @@ export function AccountActions() {
       
       <Button 
         variant="outline" 
-        className="border-foreground text-foreground hover:bg-muted px-6"
+        className="border-foreground text-foreground hover:bg-muted hover:text-primary-foreground hover:bg-primary hover:border-primary px-6 transition-all duration-200"
         size="lg"
       >
         <Copy className="h-4 w-4 mr-2" />

@@ -53,6 +53,7 @@ export default {
           bg: "hsl(var(--success-bg))",
         },
         "orange-dark": "hsl(var(--orange-dark))",
+        "card-placeholder": "hsl(var(--card-placeholder))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
