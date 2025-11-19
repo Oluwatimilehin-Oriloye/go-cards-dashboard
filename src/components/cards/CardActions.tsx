@@ -1,6 +1,7 @@
 import { Info, Plus, Snowflake, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { FundCardModal } from "@/components/modals/FundCardModal";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,13 +24,14 @@ interface CardActionsProps {
 
 export function CardActions({ selectedCardId, cardName, balance }: CardActionsProps) {
   const [detailsModalOpen, setDetailsModalOpen] = useState(false);
+  const [fundCardModalOpen, setFundCardModalOpen] = useState(false);
 
   const handleDetails = () => {
     setDetailsModalOpen(true);
   };
 
   const handleAddMoney = () => {
-    toast.info("Add money functionality coming soon!");
+    setFundCardModalOpen(true);
   };
 
   const handleFreeze = () => {
@@ -48,6 +50,12 @@ export function CardActions({ selectedCardId, cardName, balance }: CardActionsPr
         cardId={selectedCardId}
         cardName={cardName}
         balance={balance}
+      />
+
+      <FundCardModal
+        isOpen={fundCardModalOpen}
+        onClose={() => setFundCardModalOpen(false)}
+        cardName={cardName}
       />
 
       <div className="flex justify-center gap-8">
