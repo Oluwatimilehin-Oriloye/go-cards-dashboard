@@ -4,9 +4,13 @@ import { TopNav } from "@/components/dashboard/TopNav";
 import { VirtualCardCarousel } from "@/components/cards/VirtualCardCarousel";
 import { CardActions } from "@/components/cards/CardActions";
 import { CardTransactions } from "@/components/cards/CardTransactions";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import { CreateVirtualCardModal } from "@/components/modals/CreateVirtualCardModal";
 
 export default function Cards() {
   const [selectedCardId, setSelectedCardId] = useState("temu-card");
+  const [showCreateCardModal, setShowCreateCardModal] = useState(false);
 
   // Mock cards data
   const cards = [
@@ -16,6 +20,8 @@ export default function Cards() {
   ];
 
   const selectedCard = cards.find(card => card.id === selectedCardId) || cards[0];
+  const MAX_CARDS = 3;
+  const currentCardCount = cards.length;
 
   return (
     <div className="flex min-h-screen bg-background">
@@ -28,6 +34,13 @@ export default function Cards() {
           {/* Page Title */}
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold text-foreground">Cards</h1>
+            <Button 
+              onClick={() => setShowCreateCardModal(true)}
+              className="bg-primary hover:bg-primary/90"
+            >
+              <Plus className="mr-2 h-4 w-4" />
+              Create Virtual Card
+            </Button>
           </div>
 
           {/* Card Carousel */}
@@ -47,6 +60,14 @@ export default function Cards() {
           <CardTransactions selectedCardId={selectedCardId} />
         </main>
       </div>
+
+      {/* Modals */}
+      <CreateVirtualCardModal
+        isOpen={showCreateCardModal}
+        onClose={() => setShowCreateCardModal(false)}
+        currentCardCount={currentCardCount}
+        maxCards={MAX_CARDS}
+      />
     </div>
   );
 }

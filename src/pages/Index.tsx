@@ -5,7 +5,7 @@ import { HeroSection } from "@/components/dashboard/HeroSection";
 import { StackedCardsCarousel } from "@/components/dashboard/StackedCardsCarousel";
 import { QuickActions } from "@/components/dashboard/QuickActions";
 import { RecentTransactions } from "@/components/dashboard/RecentTransactions";
-import { CreateCardModal } from "@/components/modals/CreateCardModal";
+import { CreateVirtualCardModal } from "@/components/modals/CreateVirtualCardModal";
 
 const Index = () => {
   const [showCreateCardModal, setShowCreateCardModal] = useState(false);
@@ -41,7 +41,7 @@ const Index = () => {
       </div>
 
       {/* Create Card Modal */}
-      <CreateCardModal
+      <CreateVirtualCardModal
         isOpen={showCreateCardModal}
         onClose={() => setShowCreateCardModal(false)}
         currentCardCount={currentCardCount}
