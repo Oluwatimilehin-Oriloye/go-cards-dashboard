@@ -14,14 +14,17 @@ const cards = [
 ];
 
 export function VirtualCardCarousel({ selectedCardId, onCardSelect }: VirtualCardCarouselProps) {
+  const MAX_CARDS = 3;
+  const currentCardCount = cards.length;
+
   return (
     <div className="relative px-12">
-      <Carousel className="w-full max-w-2xl mx-auto">
+      <Carousel className="w-full max-w-3xl mx-auto">
         <CarouselContent>
           {cards.map((card) => (
             <CarouselItem key={card.id}>
               <div 
-                className="cursor-pointer"
+                className="cursor-pointer flex justify-center"
                 onClick={() => onCardSelect(card.id)}
               >
                 <VirtualCardDisplay
@@ -34,7 +37,9 @@ export function VirtualCardCarousel({ selectedCardId, onCardSelect }: VirtualCar
             </CarouselItem>
           ))}
           <CarouselItem>
-            <CreateCardButton />
+            <div className="flex justify-center">
+              <CreateCardButton currentCardCount={currentCardCount} maxCards={MAX_CARDS} />
+            </div>
           </CarouselItem>
         </CarouselContent>
         <CarouselPrevious />

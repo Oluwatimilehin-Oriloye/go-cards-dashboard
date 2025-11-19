@@ -2,19 +2,28 @@ import { Plus } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 
-export function CreateCardButton() {
+interface CreateCardButtonProps {
+  currentCardCount: number;
+  maxCards: number;
+}
+
+export function CreateCardButton({ currentCardCount, maxCards }: CreateCardButtonProps) {
   const handleCreateCard = () => {
-    toast.success("Create card functionality coming soon!");
+    if (currentCardCount >= maxCards) {
+      toast.error(`Limit reached — you can only own ${maxCards} virtual cards.`);
+    } else {
+      toast.success("Create card functionality coming soon!");
+    }
   };
 
   return (
     <Card 
       onClick={handleCreateCard}
       className="
-        h-48 p-6 cursor-pointer
+        w-96 h-56 p-6 cursor-pointer
         bg-card border-2 border-dashed border-border
         hover:border-primary hover:bg-muted
-        transition-all duration-300
+        transition-all duration-300 rounded-2xl
         flex flex-col items-center justify-center
         group
       "
@@ -32,7 +41,10 @@ export function CreateCardButton() {
         Create New Card
       </p>
       <p className="text-sm text-muted-foreground mt-1">
-        Add a new virtual card
+        {currentCardCount >= maxCards 
+          ? `Maximum ${maxCards} cards reached`
+          : `Add a new virtual card (${currentCardCount}/${maxCards})`
+        }
       </p>
     </Card>
   );

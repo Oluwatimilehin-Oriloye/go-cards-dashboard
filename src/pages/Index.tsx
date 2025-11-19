@@ -1,11 +1,17 @@
+import { useState } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { TopNav } from "@/components/dashboard/TopNav";
 import { HeroSection } from "@/components/dashboard/HeroSection";
-import { VirtualCardsSection } from "@/components/dashboard/VirtualCardsSection";
+import { StackedCardsCarousel } from "@/components/dashboard/StackedCardsCarousel";
 import { QuickActions } from "@/components/dashboard/QuickActions";
 import { RecentTransactions } from "@/components/dashboard/RecentTransactions";
+import { CreateCardModal } from "@/components/modals/CreateCardModal";
 
 const Index = () => {
+  const [showCreateCardModal, setShowCreateCardModal] = useState(false);
+  const MAX_CARDS = 3;
+  const currentCardCount = 3; // Mock: User has 3 cards
+
   return (
     <div className="flex min-h-screen w-full bg-background">
       {/* Sidebar */}
@@ -19,8 +25,12 @@ const Index = () => {
           {/* Hero Section */}
           <HeroSection />
 
-          {/* Virtual Cards Section */}
-          <VirtualCardsSection />
+          {/* Stacked Cards Carousel */}
+          <StackedCardsCarousel 
+            currentCardCount={currentCardCount}
+            maxCards={MAX_CARDS}
+            onCreateCard={() => setShowCreateCardModal(true)}
+          />
 
           {/* Quick Actions */}
           <QuickActions />
@@ -29,6 +39,14 @@ const Index = () => {
           <RecentTransactions />
         </main>
       </div>
+
+      {/* Create Card Modal */}
+      <CreateCardModal
+        isOpen={showCreateCardModal}
+        onClose={() => setShowCreateCardModal(false)}
+        currentCardCount={currentCardCount}
+        maxCards={MAX_CARDS}
+      />
     </div>
   );
 };

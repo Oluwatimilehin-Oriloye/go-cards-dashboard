@@ -3,7 +3,7 @@ import { Filter } from "lucide-react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { TopNav } from "@/components/dashboard/TopNav";
 import { Button } from "@/components/ui/button";
-import { ActivityTimeline } from "@/components/notifications/ActivityTimeline";
+import { PhysicalCardTimeline } from "@/components/notifications/PhysicalCardTimeline";
 import { NotificationsList } from "@/components/notifications/NotificationsList";
 import { NotificationDetailsModal } from "@/components/notifications/NotificationDetailsModal";
 import { TrackingDetailsModal } from "@/components/notifications/TrackingDetailsModal";
@@ -50,8 +50,8 @@ export default function Notifications() {
           {/* Header */}
           <div className="flex items-start justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-foreground">Notifications & Tracking</h1>
-              <p className="text-sm text-muted-foreground mt-1">
+              <h1 className="text-3xl font-bold text-foreground">Notifications & Tracking</h1>
+              <p className="text-muted-foreground mt-1">
                 Monitor card activity and track card events in real time.
               </p>
             </div>
@@ -60,8 +60,8 @@ export default function Notifications() {
             </Button>
           </div>
 
-          {/* Timeline Section */}
-          <ActivityTimeline onEventClick={setSelectedEvent} />
+          {/* Physical Card Timeline Section */}
+          <PhysicalCardTimeline onStepClick={setSelectedEvent} />
 
           {/* Notifications List */}
           <NotificationsList 

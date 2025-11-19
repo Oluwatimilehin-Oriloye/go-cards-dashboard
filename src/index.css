@@ -8,9 +8,9 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* GTBank Color Palette */
-    --background: 0 0% 100%;
-    --foreground: 0 0% 0%;
+    /* GTBank Color System - Official Brand Colors */
+    --background: 0 0% 100%; /* White #FFFFFF */
+    --foreground: 0 0% 0%; /* Black #000000 */
 
     --card: 0 0% 100%;
     --card-foreground: 0 0% 0%;
@@ -18,35 +18,38 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 0%;
 
-    /* GTBank Orange Primary */
-    --primary: 23 100% 50%;
+    /* GTBank Orange #F15A22 */
+    --primary: 17 90% 54%;
     --primary-foreground: 0 0% 100%;
 
-    /* Light backgrounds */
-    --secondary: 0 0% 98%;
+    /* Light Gray #F5F5F5 for placeholders */
+    --secondary: 0 0% 96%;
     --secondary-foreground: 0 0% 0%;
 
-    --muted: 0 0% 98%;
+    --muted: 0 0% 96%;
     --muted-foreground: 0 0% 45%;
 
-    --accent: 23 100% 50%;
+    --accent: 17 90% 54%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
     /* Borders */
     --border: 0 0% 85%;
     --input: 0 0% 85%;
-    --ring: 23 100% 50%;
+    --ring: 17 90% 54%;
 
     /* Success colors */
     --success: 123 46% 34%;
     --success-foreground: 0 0% 100%;
     --success-bg: 123 41% 92%;
 
-    /* Dark orange for hover states */
-    --orange-dark: 23 100% 45%;
+    /* Dark orange for hover states #E65100 */
+    --orange-dark: 17 100% 45%;
+
+    /* Card placeholder gray */
+    --card-placeholder: 0 0% 96%;
 
     --radius: 0.75rem;
 
