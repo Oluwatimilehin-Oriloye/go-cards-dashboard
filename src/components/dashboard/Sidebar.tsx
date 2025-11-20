@@ -5,19 +5,21 @@ import { useState } from "react";
 import { LogoutModal } from "@/components/modals/LogoutModal";
 import { SupportModal } from "@/components/modals/SupportModal";
 import { toast } from "sonner";
-
-const navigation = [
-  { name: "Home", href: "/", icon: Home },
-  { name: "Accounts", href: "/accounts", icon: CreditCard },
-  { name: "Payments", href: "/payments", icon: DollarSign },
-  { name: "Transactions", href: "/transactions", icon: Repeat },
-  { name: "Cards", href: "/cards", icon: CreditCard },
-  { name: "Notifications & Tracking", href: "/notifications", icon: Bell },
-];
+import { useTranslation } from "react-i18next";
 
 export function Sidebar() {
+  const { t } = useTranslation();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showSupportModal, setShowSupportModal] = useState(false);
+
+  const navigation = [
+    { name: t('nav.home'), href: "/", icon: Home },
+    { name: t('nav.accounts'), href: "/accounts", icon: CreditCard },
+    { name: t('nav.payments'), href: "/payments", icon: DollarSign },
+    { name: t('nav.transactions'), href: "/transactions", icon: Repeat },
+    { name: t('nav.cards'), href: "/cards", icon: CreditCard },
+    { name: t('nav.notifications'), href: "/notifications", icon: Bell },
+  ];
 
   const handleLogout = () => {
     toast.success("Logged out successfully");
@@ -62,7 +64,7 @@ export function Sidebar() {
               )}
             >
               <BookOpen className="mr-3 h-5 w-5 flex-shrink-0" aria-hidden="true" />
-              <span>Help Bible</span>
+              <span>{t('nav.helpBible')}</span>
             </button>
 
             <button
@@ -73,7 +75,7 @@ export function Sidebar() {
               )}
             >
               <LogOut className="mr-3 h-5 w-5 flex-shrink-0" aria-hidden="true" />
-              <span>Logout</span>
+              <span>{t('nav.logout')}</span>
             </button>
           </div>
         </div>

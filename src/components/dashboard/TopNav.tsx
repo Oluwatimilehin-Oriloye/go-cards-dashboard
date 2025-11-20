@@ -1,15 +1,20 @@
-import { Bell, Settings, ChevronDown } from "lucide-react";
+import { Bell, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from "react";
 import { ChangePasswordModal } from "@/components/modals/ChangePasswordModal";
 import { EditProfilePictureModal } from "@/components/modals/EditProfilePictureModal";
+import { useTranslation } from "react-i18next";
 
 export function TopNav() {
-  const [language, setLanguage] = useState("en");
+  const { i18n } = useTranslation();
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
+
+  const handleLanguageChange = (value: string) => {
+    i18n.changeLanguage(value);
+  };
 
   return (
     <>
@@ -24,7 +29,7 @@ export function TopNav() {
           {/* Right side - Actions */}
           <div className="flex items-center gap-4">
             {/* Language Selector */}
-            <Select value={language} onValueChange={setLanguage}>
+            <Select value={i18n.language} onValueChange={handleLanguageChange}>
               <SelectTrigger className="w-[180px] border-0 bg-transparent">
                 <SelectValue />
               </SelectTrigger>
@@ -33,7 +38,7 @@ export function TopNav() {
                 <SelectItem value="yo">Yoruba</SelectItem>
                 <SelectItem value="ha">Hausa</SelectItem>
                 <SelectItem value="ig">Igbo</SelectItem>
-                <SelectItem value="pcm">Pidgin</SelectItem>
+                <SelectItem value="pcm">Nigerian Pidgin</SelectItem>
               </SelectContent>
             </Select>
 

@@ -67,7 +67,10 @@ export function LinkedPlatformsGrid() {
 
       {selectedPlatform && (
         <ManagePlatformModal
-          platform={selectedPlatform}
+          platformName={selectedPlatform.name}
+          linkedCards={[
+            { id: "1", name: selectedPlatform.name, lastFour: selectedPlatform.cardLastFour }
+          ]}
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
         />
