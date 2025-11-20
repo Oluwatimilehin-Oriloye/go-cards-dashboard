@@ -1,140 +1,119 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Calendar, CreditCard, Hash, ArrowUpRight, ArrowDownRight } from "lucide-react";
-
-interface Transaction {
-  id: string;
-  date: string;
-  amount: string;
-  type: "Inflow" | "Outflow";
-  description: string;
-  status: string;
-  card: string;
-}
+import { useTranslation } from "react-i18next";
 
 interface TransactionDetailsModalProps {
-  transaction: Transaction | null;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
+  isOpen: boolean;
+  onClose: () => void;
+  transaction: {
+    id: string;
+    amount: number;
+    type: "inflow" | "outflow";
+    description: string;
+    date: string;
+    time: string;
+    status: "completed" | "pending" | "failed";
+    cardName: string;
+    cardLastFour: string;
+    merchantName?: string;
+    merchantCategory?: string;
+    referenceNumber: string;
+    fees?: number;
+  };
 }
 
-export function TransactionDetailsModal({
-  transaction,
-  open,
-  onOpenChange,
-}: TransactionDetailsModalProps) {
-  if (!transaction) return null;
+export function TransactionDetailsModal({ isOpen, onClose, transaction }: TransactionDetailsModalProps) {
+  const { t } = useTranslation();
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "completed":
+        return "bg-green-500/10 text-green-600 border-green-500/20";
+      case "pending":
+        return "bg-yellow-500/10 text-yellow-600 border-yellow-500/20";
+      case "failed":
+        return "bg-red-500/10 text-red-600 border-red-500/20";
+      default:
+        return "bg-muted text-muted-foreground";
+    }
+  };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold">
-            Transaction Details
-          </DialogTitle>
+          <DialogTitle className="text-2xl font-bold">{t('transactions.transactionDetails')}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6 py-4">
-          {/* Amount Section */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div
-                className={`p-3 rounded-full ${
-                  transaction.type === "Inflow"
-                    ? "bg-success-bg"
-                    : "bg-muted"
-                }`}
-              >
-                {transaction.type === "Inflow" ? (
-                  <ArrowDownRight className="h-5 w-5 text-success" />
-                ) : (
-                  <ArrowUpRight className="h-5 w-5 text-muted-foreground" />
-                )}
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Amount</p>
-                <p className="text-2xl font-bold text-foreground">
-                  {transaction.amount}
-                </p>
-              </div>
-            </div>
-            <Badge
-              className={`${
-                transaction.type === "Inflow"
-                  ? "bg-success-bg text-success hover:bg-success-bg"
-                  : "bg-muted text-muted-foreground hover:bg-muted"
-              }`}
+          {/* Amount and Type */}
+          <div className="text-center space-y-2">
+            <p className="text-4xl font-bold text-foreground">
+              {t('common.currency')}{transaction.amount.toLocaleString()}
+            </p>
+            <Badge 
+              variant="outline" 
+              className={transaction.type === "inflow" ? "bg-green-500/10 text-green-600 border-green-500/20" : "bg-red-500/10 text-red-600 border-red-500/20"}
             >
-              {transaction.type}
+              {transaction.type === "inflow" ? t('transactions.inflow') : t('transactions.outflow')}
             </Badge>
           </div>
 
           <Separator />
 
-          {/* Transaction Details */}
+          {/* Transaction Details Grid */}
           <div className="space-y-4">
-            <div className="flex items-start gap-3">
-              <Hash className="h-5 w-5 text-muted-foreground mt-0.5" />
-              <div className="flex-1">
-                <p className="text-sm text-muted-foreground">Transaction ID</p>
-                <p className="text-sm font-medium text-foreground">
-                  {transaction.id}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3">
-              <Calendar className="h-5 w-5 text-muted-foreground mt-0.5" />
-              <div className="flex-1">
-                <p className="text-sm text-muted-foreground">Date & Time</p>
-                <p className="text-sm font-medium text-foreground">
-                  {transaction.date}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3">
-              <CreditCard className="h-5 w-5 text-muted-foreground mt-0.5" />
-              <div className="flex-1">
-                <p className="text-sm text-muted-foreground">Card Used</p>
-                <p className="text-sm font-medium text-foreground">
-                  {transaction.card}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3">
-              <div className="h-5 w-5 flex items-center justify-center mt-0.5">
-                <div className="h-2 w-2 rounded-full bg-muted-foreground" />
-              </div>
-              <div className="flex-1">
-                <p className="text-sm text-muted-foreground">Description</p>
-                <p className="text-sm font-medium text-foreground">
-                  {transaction.description}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3">
-              <div className="h-5 w-5 flex items-center justify-center mt-0.5">
-                <div className="h-2 w-2 rounded-full bg-success" />
-              </div>
-              <div className="flex-1">
-                <p className="text-sm text-muted-foreground">Status</p>
-                <Badge className="bg-success-bg text-success hover:bg-success-bg mt-1">
-                  • {transaction.status}
+            <DetailRow label={t('transactions.transactionId')} value={transaction.id} />
+            <DetailRow 
+              label={t('transactions.dateTime')} 
+              value={`${transaction.date} at ${transaction.time}`} 
+            />
+            <DetailRow 
+              label={t('transactions.status')} 
+              value={
+                <Badge variant="outline" className={getStatusColor(transaction.status)}>
+                  {t(`transactions.${transaction.status}`)}
                 </Badge>
-              </div>
-            </div>
+              } 
+            />
+            <DetailRow 
+              label={t('transactions.cardUsed')} 
+              value={`${transaction.cardName} (****${transaction.cardLastFour})`} 
+            />
+            
+            {transaction.merchantName && (
+              <DetailRow label={t('transactions.merchantName')} value={transaction.merchantName} />
+            )}
+            
+            {transaction.merchantCategory && (
+              <DetailRow label={t('transactions.merchantCategory')} value={transaction.merchantCategory} />
+            )}
+            
+            <DetailRow label={t('transactions.referenceNumber')} value={transaction.referenceNumber} />
+            
+            {transaction.fees !== undefined && transaction.fees > 0 && (
+              <DetailRow 
+                label={t('transactions.fees')} 
+                value={`${t('common.currency')}${transaction.fees.toLocaleString()}`} 
+              />
+            )}
+            
+            <DetailRow label={t('transactions.description')} value={transaction.description} />
           </div>
         </div>
       </DialogContent>
     </Dialog>
+  );
+}
+
+function DetailRow({ label, value }: { label: string; value: React.ReactNode }) {
+  return (
+    <div className="flex justify-between items-start gap-4">
+      <span className="text-sm text-muted-foreground font-medium">{label}</span>
+      <span className="text-sm text-foreground font-semibold text-right flex-1">
+        {value}
+      </span>
+    </div>
   );
 }

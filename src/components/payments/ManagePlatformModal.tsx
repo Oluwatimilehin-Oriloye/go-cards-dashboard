@@ -1,91 +1,130 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { CreditCard, Unlink, RefreshCw } from "lucide-react";
+import { CreditCard, X } from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
-
-interface Platform {
-  name: string;
-  cardLastFour: string;
-}
+import { useTranslation } from "react-i18next";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface ManagePlatformModalProps {
-  platform: Platform;
   isOpen: boolean;
   onClose: () => void;
+  platformName: string;
+  linkedCards?: Array<{ id: string; name: string; lastFour: string }>;
 }
 
-export function ManagePlatformModal({ platform, isOpen, onClose }: ManagePlatformModalProps) {
-  const handleRemoveCard = () => {
-    toast.success(`Card removed from ${platform.name}`);
-    onClose();
+export function ManagePlatformModal({ 
+  isOpen, 
+  onClose, 
+  platformName,
+  linkedCards = []
+}: ManagePlatformModalProps) {
+  const { t } = useTranslation();
+  const [showUnlinkDialog, setShowUnlinkDialog] = useState(false);
+  const [selectedCard, setSelectedCard] = useState<{ id: string; name: string } | null>(null);
+
+  const handleUnlinkClick = (card: { id: string; name: string }) => {
+    setSelectedCard(card);
+    setShowUnlinkDialog(true);
   };
 
-  const handleReplaceCard = () => {
-    toast.info("Card replacement feature coming soon");
+  const handleConfirmUnlink = () => {
+    if (selectedCard) {
+      toast.success(t('payments.cardUnlinked', { platform: platformName }));
+      setShowUnlinkDialog(false);
+      setSelectedCard(null);
+    }
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle className="text-2xl">Manage {platform.name}</DialogTitle>
-          <DialogDescription>
-            View and manage the virtual card linked to this platform
-          </DialogDescription>
-        </DialogHeader>
+    <>
+      <Dialog open={isOpen} onOpenChange={onClose}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold">
+              {t('payments.managePlatform', { platform: platformName })}
+            </DialogTitle>
+            <DialogDescription>
+              {t('payments.linkedCards', { platform: platformName })}
+            </DialogDescription>
+          </DialogHeader>
 
-        <div className="py-6">
-          {/* Linked Card Display */}
-          <Card className="p-6 bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
-            <div className="flex items-center gap-4">
-              <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary/20">
-                <CreditCard className="w-6 h-6 text-primary" />
-              </div>
-              <div className="flex-1">
-                <h4 className="font-semibold text-foreground">{platform.name}</h4>
-                <p className="text-sm text-muted-foreground">
-                  •••• •••• •••• {platform.cardLastFour}
+          <div className="space-y-4 py-4">
+            {linkedCards.length === 0 ? (
+              <div className="text-center py-8">
+                <CreditCard className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
+                <p className="text-muted-foreground">
+                  {t('payments.noLinkedCards')}
                 </p>
               </div>
-            </div>
-          </Card>
-
-          {/* Info Note */}
-          <div className="mt-4 p-4 rounded-lg bg-muted/50">
-            <p className="text-sm text-muted-foreground">
-              <strong className="text-foreground">Note:</strong> Removing a card does not delete
-              it — only unlinks it from this platform.
-            </p>
+            ) : (
+              <div className="space-y-3">
+                {linkedCards.map((card) => (
+                  <Card key={card.id} className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                          <CreditCard className="h-5 w-5 text-primary" />
+                        </div>
+                        <div>
+                          <p className="font-semibold text-foreground">{card.name}</p>
+                          <p className="text-sm text-muted-foreground">
+                            **** **** **** {card.lastFour}
+                          </p>
+                        </div>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleUnlinkClick({ id: card.id, name: card.name })}
+                        className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            )}
           </div>
-        </div>
+        </DialogContent>
+      </Dialog>
 
-        <DialogFooter className="flex-col sm:flex-col gap-2">
-          <Button
-            onClick={handleReplaceCard}
-            variant="outline"
-            className="w-full"
-          >
-            <RefreshCw className="w-4 h-4 mr-2" />
-            Replace Linked Card
-          </Button>
-          <Button
-            onClick={handleRemoveCard}
-            variant="destructive"
-            className="w-full"
-          >
-            <Unlink className="w-4 h-4 mr-2" />
-            Remove Card from Platform
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+      {/* Unlink Confirmation Dialog */}
+      <AlertDialog open={showUnlinkDialog} onOpenChange={setShowUnlinkDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {t('payments.unlinkCard')}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {t('payments.unlinkConfirm', { 
+                card: selectedCard?.name || '', 
+                platform: platformName 
+              })}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleConfirmUnlink}
+              className="bg-destructive hover:bg-destructive/90"
+            >
+              {t('payments.unlinkCard')}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 }
