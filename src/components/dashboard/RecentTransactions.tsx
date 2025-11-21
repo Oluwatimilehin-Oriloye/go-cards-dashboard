@@ -1,12 +1,13 @@
 import { ChevronRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useTranslation } from "react-i18next";
 
 const transactions = [
   {
     id: 1,
     date: "13 August 2025, 18:48:45",
-    amount: "€ 86.35",
+    amount: "₦ 86.35",
     type: "Withdraw",
     description: "Ifenna Nwafor",
     status: "Completed",
@@ -38,7 +39,7 @@ const transactions = [
   {
     id: 5,
     date: "03 July 2025, 02:01:20",
-    amount: "$ 5.00",
+    amount: "₦ 5.00",
     type: "Withdraw",
     description: "Card deposit",
     status: "Completed",
@@ -46,12 +47,14 @@ const transactions = [
 ];
 
 export function RecentTransactions() {
+  const { t } = useTranslation();
+  
   return (
     <section>
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-xl font-semibold text-foreground">Recent transactions</h2>
+        <h2 className="text-xl font-semibold text-foreground">{t('dashboard.recentTransactions')}</h2>
         <button className="text-sm font-medium text-primary hover:text-orange-dark transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:rounded">
-          See all
+          {t('common.seeAll')}
         </button>
       </div>
 
@@ -61,19 +64,19 @@ export function RecentTransactions() {
             <thead>
               <tr className="border-b border-border bg-secondary">
                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                  Date
+                  {t('transactions.date')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                  Amount
+                  {t('transactions.amount')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                  Type
+                  {t('transactions.type')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                  Description
+                  {t('transactions.description')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                  Status
+                  {t('transactions.status')}
                 </th>
                 <th className="w-12 px-6 py-3"></th>
               </tr>

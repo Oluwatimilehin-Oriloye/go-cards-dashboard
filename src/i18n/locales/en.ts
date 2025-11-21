@@ -26,6 +26,7 @@ export default {
     filter: 'Filter',
     viewAll: 'View All',
     seeMore: 'See more',
+    seeAll: 'See all',
     currency: '₦',
   },
   
@@ -43,6 +44,16 @@ export default {
     fund: 'Fund',
     payBills: 'Pay Bills',
     requestStatement: 'Request Statement',
+  },
+
+  // Dashboard
+  dashboard: {
+    heroTitle: 'Get your finances in your hands',
+    heroSubtitle: 'Manage, fund, track and control all your cards from one place.',
+    createCardNow: 'Create Virtual Card Now',
+    recentTransactions: 'Recent transactions',
+    yourVirtualCards: 'Your Virtual Cards',
+    quickActions: 'Quick Actions',
   },
   
   // Cards
@@ -158,6 +169,7 @@ export default {
     dateTime: 'Date & Time',
     type: 'Type',
     amount: 'Amount',
+    date: 'Date',
     status: 'Status',
     cardUsed: 'Card Used',
     merchantName: 'Merchant Name',
