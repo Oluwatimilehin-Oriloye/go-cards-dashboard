@@ -11,7 +11,7 @@ const mockTransactions = [
   {
     id: "TXN001",
     amount: 85.35,
-    type: "outflow" as const,
+    type: "outflow" as "inflow" | "outflow",
     description: "Ifenna Nwafor",
     date: "13 August 2025",
     time: "18:48:45",
