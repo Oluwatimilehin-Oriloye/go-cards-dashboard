@@ -13,7 +13,7 @@ export function Sidebar() {
   const [showSupportModal, setShowSupportModal] = useState(false);
 
   const navigation = [
-    { name: t('nav.home'), href: "/", icon: Home },
+    { name: t('nav.home'), href: "/home", icon: Home },
     { name: t('nav.accounts'), href: "/accounts", icon: CreditCard },
     { name: t('nav.payments'), href: "/payments", icon: DollarSign },
     { name: t('nav.transactions'), href: "/transactions", icon: Repeat },
